@@ -7,11 +7,19 @@ import { IProduct } from './Product';
   styleUrls: ['./products-list.component.css']
 })
 export class ProductsListComponent implements OnInit {
+  constructor() {
+    this.filteredProducts = this.products;
+    this.listFilter = 'cart';
+  }
   pageTitle = 'Products List';
   imageWidth = 50;
   imageMargin = 2;
   showImage = false;
-  listFilter = 'cart';
+
+  // Filtering
+  listFilterString: string;
+  filteredProducts: Array<IProduct>;
+
   products: Array<IProduct> = [
     {
       productId: 1,
@@ -64,6 +72,22 @@ export class ProductsListComponent implements OnInit {
       imageUrl: 'assets/images/xbox-controller.png'
     }
   ];
+
+  get listFilter(): string {
+    return this.listFilterString;
+  }
+
+  set listFilter(value: string) {
+    this.listFilterString = value;
+    this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
+  }
+
+  private performFilter(filterBy: string): Array<IProduct> {
+    filterBy = filterBy.toLocaleLowerCase();
+    return this.products.filter((product: IProduct) => {
+      return product.productName.toLocaleLowerCase().indexOf(filterBy) !== - 1;
+    });
+  }
 
   ngOnInit(): void {
     console.log('OnInit');
