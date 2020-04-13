@@ -1,25 +1,25 @@
 <div class="card">
   <div class="card-header">
-    Products list
+    {{ pageTitle }}
   </div>
   <div class="card-body">
     <div class="row">
       <div class="col-md-2">Filter by:</div>
       <div class="col-md-4">
-        <input type="text">
+        <input [(ngModel)]="listFilter" class="form-control" type="text">
       </div>
     </div>
     <div class="row">
       <div class="col-md-6">
-        <h4>Filtered by:</h4>
+        <h4>Filtered by: {{ listFilter }}</h4>
       </div>
     </div>
     <div class="table-responsive">
-      <table class="table">
+      <table class="table" *ngIf="products && products.length">
         <thead>
           <tr>
             <th>
-              <button class="btn btn-primary">Show image</button>
+              <button (click)="toggleImage()" class="btn btn-primary">{{ showImage ? 'Hide images': 'Show images' }}</button>
             </th>
             <th>Product</th>
             <th>Code</th>
@@ -28,6 +28,24 @@
             <th>Rating</th>
           </tr>
         </thead>
+        <tbody>
+        <tr *ngFor="let product of products">
+          <td>
+            <img
+              *ngIf="showImage"
+              [src]="product.imageUrl"
+              [alt]="product.productName"
+              [title]="product.productName"
+              [style.width.px]="imageWidth"
+              [style.margin.px]="imageMargin">
+          </td>
+          <td>{{ product.productName }}</td>
+          <td>{{ product.productCode }}</td>
+          <td>{{ product.releaseDate }}</td>
+          <td>{{ product.price | currency }}</td>
+          <td>{{ product.starRating }}</td>
+        </tr>
+        </tbody>
       </table>
     </div>
   </div>
