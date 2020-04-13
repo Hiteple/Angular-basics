@@ -1,17 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { IProduct } from './Product';
 
 @Component({
   selector: 'app-products-list',
-  templateUrl: './products-list.component.html'
+  templateUrl: './products-list.component.html',
+  styleUrls: ['./products-list.component.css']
 })
-export class ProductsListComponent {
+export class ProductsListComponent implements OnInit {
   pageTitle = 'Products List';
   imageWidth = 50;
   imageMargin = 2;
   showImage = false;
   listFilter = 'cart';
-  products: IProduct[] = [
+  products: Array<IProduct> = [
     {
       productId: 1,
       productName: 'Leaf Rake',
@@ -63,6 +64,10 @@ export class ProductsListComponent {
       imageUrl: 'assets/images/xbox-controller.png'
     }
   ];
+
+  ngOnInit(): void {
+    console.log('OnInit');
+  }
 
   toggleImage(): void {
     this.showImage = !this.showImage;
