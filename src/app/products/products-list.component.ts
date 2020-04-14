@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import { IProduct } from './Product';
 import {ProductsService} from '../services/products.service';
+import {catchError, tap} from 'rxjs/operators';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-products-list',
@@ -10,17 +12,6 @@ import {ProductsService} from '../services/products.service';
 export class ProductsListComponent implements OnInit {
   constructor(private productsService: ProductsService) {
   }
-  pageTitle = 'Products List';
-  imageWidth = 50;
-  imageMargin = 2;
-  showImage = false;
-
-  // Filtering
-  listFilterString: string;
-  filteredProducts: Array<IProduct>;
-
-  // All products
-  products: Array<IProduct>;
 
   get listFilter(): string {
     return this.listFilterString;
@@ -29,6 +20,28 @@ export class ProductsListComponent implements OnInit {
   set listFilter(value: string) {
     this.listFilterString = value;
     this.filteredProducts = this.listFilter ? this.performFilter(this.listFilter) : this.products;
+  }
+  pageTitle = 'Products List';
+  imageWidth = 50;
+  imageMargin = 2;
+  showImage = false;
+  errorMessage = '';
+
+  // Filtering
+  listFilterString: string;
+  filteredProducts: Array<IProduct>;
+
+  // All products
+  products: Array<IProduct>;
+
+  private static handleError(error: HttpErrorResponse) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = 'An error ocurred: ' + error.error.message;
+    } else {
+      errorMessage = 'Server returned code: ' + error.status + ', error message is: ' + error.error.message;
+    }
+    return errorMessage;
   }
 
   private performFilter(filterBy: string): Array<IProduct> {
@@ -39,9 +52,15 @@ export class ProductsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.products = this.productsService.getProducts();
-    this.filteredProducts = this.products;
+    this.productsService.getProducts().subscribe(
+      data => {
+        this.products = data;
+        this.filteredProducts = this.products;
+      },
+      error => this.errorMessage = ProductsListComponent.handleError(error)
+    );
   }
+
   toggleImage(): void {
     this.showImage = !this.showImage;
   }
