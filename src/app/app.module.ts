@@ -10,6 +10,7 @@ import {StarComponent} from './shared/star.component';
 import {HttpClientModule} from '@angular/common/http';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import {RouterModule, Routes} from '@angular/router';
+import {ProductGuard} from './guards/product.guard';
 
 const routes: Routes = [
   {
@@ -22,11 +23,13 @@ const routes: Routes = [
   },
   {
     path: 'products/:id',
+    canActivate: [ProductGuard],
     component: ProductDetailComponent
   },
   {
     path: '**',
-    redirectTo: '/'
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
 
