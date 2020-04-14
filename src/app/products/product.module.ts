@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {ProductDetailComponent} from '../product-detail/product-detail.component';
 import {ProductsListComponent} from './products-list.component';
 import {ConvertLineToSpaces} from '../shared/convert-line-to-spaces';
-import {StarComponent} from '../shared/star.component';
-import {FormsModule} from '@angular/forms';
-import { RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {ProductGuard} from '../guards/product.guard';
+import {SharedModule} from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -24,13 +22,11 @@ const routes: Routes = [
   declarations: [
     ProductDetailComponent,
     ProductsListComponent,
-    ConvertLineToSpaces,
-    StarComponent
+    ConvertLineToSpaces
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    SharedModule
   ]
 })
 export class ProductModule { }
