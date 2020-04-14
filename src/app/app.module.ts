@@ -20,7 +20,8 @@ import {StarComponent} from './shared/star.component';
     BrowserModule,
     FormsModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
