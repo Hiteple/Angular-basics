@@ -8,6 +8,27 @@ import {FormsModule} from '@angular/forms';
 import {ConvertLineToSpaces} from './shared/convert-line-to-spaces';
 import {StarComponent} from './shared/star.component';
 import {HttpClientModule} from '@angular/common/http';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
+import {RouterModule, Routes} from '@angular/router';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: WelcomeComponent
+  },
+  {
+    path: 'products',
+    component: ProductsListComponent
+  },
+  {
+    path: 'products/:id',
+    component: ProductDetailComponent
+  },
+  {
+    path: '**',
+    redirectTo: '/'
+  }
+];
 
 @NgModule({
   declarations: [
@@ -15,12 +36,14 @@ import {HttpClientModule} from '@angular/common/http';
     WelcomeComponent,
     ProductsListComponent,
     StarComponent,
-    ConvertLineToSpaces
+    ConvertLineToSpaces,
+    ProductDetailComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [
   ],
